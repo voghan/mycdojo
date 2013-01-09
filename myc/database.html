@@ -1,0 +1,106 @@
+<script src="../dojo/dojo.js.uncompressed.js">
+
+</script>
+
+<script>
+require(["dojo/parser","dojo/on","dijit/form/TextBox", "dijit/form/Button", "dojo/domReady!"]);
+
+</script>
+
+<script src="/acdb/_utils/script/couch.js"></script>
+<script>
+CouchDB.urlPrefix = "../acdb"; // from this page page to db relatively
+var COUCH_DB = new CouchDB("mot"); // 'connect' to db
+</script>
+<script src="BBY_DI_FULL.json"></script>
+<script src="views.json"></script>
+<script src="BBY_DI_DELTA.json"></script>
+
+<script>
+
+
+require(["dojo/on", "dojo/dom", "dojo/domReady!"],
+function(on, dom) {
+
+    var createBtn = dom.byId("createBtn");
+    var createViewsBtn = dom.byId("createViewsBtn");
+    var primeBtn = dom.byId("primeBtn");
+    var dropBtn = dom.byId("dropBtn");
+    var updateBtn = dom.byId("updateBtn");
+
+
+    on(createBtn, "click", function(evt){
+        console.log("...createBtn");
+        COUCH_DB.createDb();
+        });
+
+    on(createViewsBtn, "click", function(evt){
+        console.log("...createViewsBtn");
+        
+        COUCH_DB.request("PUT", "/" + COUCH_DB.name + "/_design/render", {body: JSON.stringify(views)});
+        });
+
+    on(primeBtn, "click", function(evt){
+        console.log("...primeBtn");
+        
+        console.log(docs);
+        COUCH_DB.bulkSave(docs);
+        });
+
+    on(dropBtn, "click", function(evt){
+        console.log("...dropBtn");
+        COUCH_DB.deleteDb();
+        });
+
+    on(updateBtn, "click", function(evt){
+        console.log("...updateBtn");
+
+        var map = [];
+
+        for (var i = 0; i < delta.length; i++) {
+
+            var versionsId = delta[i].F000.replace(" ","_") 
+                            + delta[i].F002.replace(" ","_")
+                            + delta[i].F003.replace(" ","_")
+                            + delta[i].F006.replace(" ","_");
+
+            console.log(versionsId);
+            delta[i].versionsId = versionsId;
+            if ( delta[i].versionsId in map) {
+                console.log("found");
+                var tmp = map[delta[i].versionsId];
+                tmp.push(delta[i]);
+                map[delta[i].versionsId] = tmp;
+                
+            } else {
+                console.log("not found");
+                var tmp = [];
+                tmp.push( delta[i] );
+
+                map[delta[i].versionsId] = tmp;
+                
+            }
+            
+        }
+
+        console.log(map);
+
+        });
+
+        
+
+  });
+</script>
+
+<body>
+
+    <br>
+    <button id="createBtn">Create Database</button>
+    <button id="createViewsBtn">Create Views</button>
+    <button id="primeBtn">Prime Database</button>
+    <button id="dropBtn">Drop Database</button>
+    <button id="updateBtn">Update Database</button>
+</body>
+<br><br>
+<div id="results"/>
+

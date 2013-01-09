@@ -1,0 +1,32 @@
+<script src="../dojo/dojo.js.uncompressed.js">
+
+</script>
+<script src="BBY_DI_FULL.json"></script>
+
+
+
+<script>
+require(["dojo/store/JsonRest"], function(JsonRest){
+    myStore = new JsonRest({target:"/acdb/mot/_design/render/_view/view_by_version"});
+});
+
+require(["dojox/grid/DataGrid","dojo/store/Memory","dojo/data/ObjectStore","dojo/domReady!"
+], function(DataGrid, Memory, ObjectStore){
+    var grid,  dataStore;
+
+    grid = new DataGrid({
+        store: dataStore = new ObjectStore({objectStore: myStore}),
+        query: {  },
+        queryOptions: {},
+        structure: [
+            { name: "F000", field: "F000", width: "15%" },
+            { name: "F001", field: "F001", width: "15%" },
+            { name: "F003", field: "F003", width: "15%" },
+            { name: "F004", field: "F004", width: "15%" },
+            { name: "F006", field: "F006", width: "15%" }
+        ]
+    }, "grid");
+    grid.startup();
+
+});
+</script>

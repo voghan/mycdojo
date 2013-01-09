@@ -1,0 +1,44 @@
+<script src="../dojo/dojo.js.uncompressed.js">
+
+</script>
+
+<script>
+require(["dojo/parser","myc/IndexController","dojo/on","dijit/form/TextBox", "dijit/form/Button", "dojo/domReady!"]);
+var mController = new IndexController();
+mController.setup("/acdb","mot");
+</script>
+
+<script>
+require(["dojo/on", "dojo/dom", "dojo/domReady!"],
+function(on, dom) {
+
+    var mSearchBtn = dom.byId("searchBtn");
+
+    on(mSearchBtn, "click", function(evt){
+        var event =dom.byId(eventTextBox);
+        var page = dom.byId(pageTextBox);
+        var offer = dom.byId(offerTextBox);
+        var model = dom.byId(modelTextBox);
+
+        console.log("event:" + event.value);
+        console.log("page:" + page.value);
+        console.log("offer:" + offer.value);
+        console.log("model:" + model.value);
+
+        //"MOTV00081"
+        //mController.get(sku.value);
+        mController.findAll();
+        });
+
+  });
+</script>
+
+<body>
+
+    <br>
+    <button id="updateBtn">Search1</button>
+
+</body>
+<br><br>
+<div id="results"/>
+

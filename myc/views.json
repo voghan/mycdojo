@@ -1,0 +1,1 @@
+var views = { "_id":"_design\/render", "views" : { "view_by_version" : { "map":"function(doc) {  if(doc.versionsId ) { emit([doc.versionsId], doc); }}" }, "list_event_info" : { "map":"function(doc) {  if(doc.F000 ) { emit([doc.F000, doc.F001, doc.F002], null); }}", "reduce":"function(keys, values) {return true; }" } } }

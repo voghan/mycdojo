@@ -1,0 +1,64 @@
+<script src="../dojo/dojo.js.uncompressed.js">
+
+</script>
+
+<script>
+require(["dojo/parser","myc/IndexController","dojo/on","dijit/form/TextBox", "dijit/form/Button", "dojo/domReady!"]);
+var mController = new IndexController();
+mController.setup("/acdb","mot");
+</script>
+
+<script>
+require(["dojo/on", "dojo/dom", "dojo/domReady!"],
+function(on, dom) {
+
+    var mSearchBtn = dom.byId("searchBtn");
+
+    on(mSearchBtn, "click", function(evt){
+        var event =dom.byId(eventTextBox);
+        var page = dom.byId(pageTextBox);
+        var offer = dom.byId(offerTextBox);
+        var model = dom.byId(modelTextBox);
+
+        console.log("event:" + event.value);
+        console.log("page:" + page.value);
+        console.log("offer:" + offer.value);
+        console.log("model:" + model.value);
+
+        //"MOTV00081"
+        //mController.get(sku.value);
+        mController.findAll();
+        });
+
+  });
+</script>
+
+<body>
+    <label for="eventTextBox" >Event Name:</label> 
+    <input id="eventTextBox" style="width: 10em;" data-dojo-type="dijit/form/TextBox"/>
+    <br>
+    <label for="pageTextBox" >Page Name:</label> 
+    <input id="pageTextBox" style="width: 10em;" data-dojo-type="dijit/form/TextBox"/>
+    <br>
+    <label for="offerTextBox" >Offer Name:</label> 
+    <input id="offerTextBox" style="width: 10em;" data-dojo-type="dijit/form/TextBox"/>
+    <br>
+    <label for="modelTextBox" >Model:</label> 
+    <input id="modelTextBox" style="width: 10em;" data-dojo-type="dijit/form/TextBox"/>
+    <br>
+    <button id="searchBtn">Search1</button>
+
+    <button id="searchBtn2" onclick="mController.findAllVersions()">Search2</button>
+
+    <button type="button"
+			data-dojo-type="dijit/form/Button" >&nbsp;&nbsp;&nbsp;Search&nbsp;&nbsp;&nbsp;
+		<script type="dojo/on" data-dojo-event="click">
+			console.log("hello");
+            mController.findAll();
+			return false;
+		</script>
+	</button>
+</body>
+<br><br>
+<div id="results"/>
+
